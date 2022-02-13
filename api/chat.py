@@ -306,6 +306,13 @@ class RoomManager:
     def __init__(self):
         self._rooms: Dict[int, Room] = {}
 
+    async def get_room(self, room_id):
+        if room_id not in self._rooms:
+            if not await self._add_room(room_id):
+                return
+        room = self._rooms.get(room_id, None)
+        return room
+
     async def add_client(self, room_id, client: 'ChatHandler'):
         if room_id not in self._rooms:
             if not await self._add_room(room_id):
@@ -632,3 +639,31 @@ class AvatarHandler(api.base.ApiHandler):
         self.write({
             'avatarUrl': avatar_url
         })
+
+
+# noinspection PyAbstractClass
+# handle reply message
+class ReplyHandler(api.base.ApiHandler):
+    async def post(self):
+        logger.info(self.json_args)
+        uid = None if self.json_args['uid'] == -1 else self.json_args['uid']
+        avatar_url = await models.avatar.get_avatar_url(uid)
+        text_message = make_text_message(
+            avatar_url=avatar_url,
+            timestamp=int(time.time()),
+            author_name=self.json_args['name'],
+            author_type=3,
+            content=self.json_args['content'],
+            author_level=0,
+            id_=uuid.uuid4().hex,
+            privilege_type=0,
+            is_newbie=0,
+            is_gift_danmaku=0,
+            is_mobile_verified=True,
+            medal_level=0,
+            translation=0
+        )
+        # get room
+        room: Room = await room_manager.get_room(room_id=self.json_args['room_id'])
+        room.send_message(Command.ADD_TEXT, text_message)
+

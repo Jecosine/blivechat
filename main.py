@@ -28,6 +28,7 @@ routes = [
     (r'/api/chat', api.chat.ChatHandler),
     (r'/api/room_info', api.chat.RoomInfoHandler),
     (r'/api/avatar_url', api.chat.AvatarHandler),
+    (r'/api/reply', api.chat.ReplyHandler),
 
     (r'/(.*)', api.main.MainHandler, {'path': WEB_ROOT, 'default_filename': 'index.html'})
 ]
@@ -91,7 +92,7 @@ def run_server(host, port, debug):
         logger.warning('Address is used %s:%d', host, port)
         return
     finally:
-        url = 'http://localhost/' if port == 80 else f'http://localhost:{port}/'
+        url = f'http://{host}/' if port == 80 else f'http://{host}:{port}/'
         # 防止更新版本后浏览器加载缓存
         url += '?_v=' + update.DOODLEBEAR_VERSION
         webbrowser.open(url)
