@@ -17,7 +17,7 @@ import blivedm.blivedm as blivedm
 import config
 import models.avatar
 import models.translate
-
+import models.log
 logger = logging.getLogger(__name__)
 
 
@@ -116,6 +116,7 @@ class Room(blivedm.BLiveClient):
 
     def send_message(self, cmd, data):
         body = json.dumps({'cmd': cmd, 'data': data})
+        models.log.add_danmaku(self.room_id, body)
         for client in self.clients:
             try:
                 client.write_message(body)
@@ -353,6 +354,7 @@ class RoomManager:
         logger.info('Creating room %d', room_id)
         self._rooms[room_id] = room = Room(room_id)
         if await room.init_room():
+            # start new log file
             room.start()
             logger.info('%d rooms', len(self._rooms))
             return True
@@ -644,8 +646,10 @@ class AvatarHandler(api.base.ApiHandler):
 # noinspection PyAbstractClass
 # handle reply message
 class ReplyHandler(api.base.ApiHandler):
+    def get(self):
+        self.write('pong')
+
     async def post(self):
-        logger.info(self.json_args)
         uid = None if self.json_args['uid'] == -1 else self.json_args['uid']
         avatar_url = await models.avatar.get_avatar_url(uid)
         text_message = make_text_message(
