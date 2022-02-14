@@ -1,11 +1,11 @@
-import {mergeConfig} from '@/utils'
+import { mergeConfig } from "@/utils";
 
 export const DEFAULT_CONFIG = {
   minGiftPrice: 0, // ￥0.0
   minTickerPrice: 0.1, // ￥0.1
   showDanmaku: true,
   showTranslateDanmakuOnly: false,
-  translationSign:'【',
+  translationSign: "【",
   showSuperchat: true,
   showNewMember: true,
   showGift: true,
@@ -18,7 +18,6 @@ export const DEFAULT_CONFIG = {
   fadeOutNum: 3,
   pinTime: 0,
 
-
   imageShowType: 2,
   maxImage: 2,
 
@@ -26,27 +25,27 @@ export const DEFAULT_CONFIG = {
   blockLevel: 0,
   blockNewbie: false,
   blockNotMobileVerified: false,
-  blockKeywords: '',
-  blockUsers: '',
+  blockKeywords: "",
+  blockUsers: "",
   blockMedalLevel: 0,
 
   minDanmakuInterval: 400,
   maxDanmakuInterval: 1200,
 
-  relayMessagesByServer: false,
+  relayMessagesByServer: true,
   autoTranslate: false,
-  giftUsernamePronunciation: ''
+  giftUsernamePronunciation: "",
+};
+
+export function setLocalConfig(config) {
+  config = mergeConfig(config, DEFAULT_CONFIG);
+  window.localStorage.config = JSON.stringify(config);
 }
 
-export function setLocalConfig (config) {
-  config = mergeConfig(config, DEFAULT_CONFIG)
-  window.localStorage.config = JSON.stringify(config)
-}
-
-export function getLocalConfig () {
+export function getLocalConfig() {
   try {
-    return mergeConfig(JSON.parse(window.localStorage.config), DEFAULT_CONFIG)
+    return mergeConfig(JSON.parse(window.localStorage.config), DEFAULT_CONFIG);
   } catch {
-    return {...DEFAULT_CONFIG}
+    return { ...DEFAULT_CONFIG };
   }
 }
