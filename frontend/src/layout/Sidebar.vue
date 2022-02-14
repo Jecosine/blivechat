@@ -8,35 +8,41 @@
       :default-active="$route.path"
     >
       <el-menu-item index="/">
-        <i class="el-icon-s-home"></i>{{$t('sidebar.home')}}
+        <i class="el-icon-s-home"></i>{{ $t("sidebar.home") }}
       </el-menu-item>
-      <el-menu-item :index="$router.resolve({name: 'stylegen'}).href">
-        <i class="el-icon-brush"></i>{{$t('sidebar.stylegen')}}
+      <el-menu-item :index="$router.resolve({ name: 'log' }).href">
+        <i class="el-icon-takeaway-box"></i>{{ $t("sidebar.log") }}
       </el-menu-item>
-      <el-menu-item :index="$router.resolve({name: 'help'}).href">
-        <i class="el-icon-question"></i>{{$t('sidebar.help')}}
+      <el-menu-item :index="$router.resolve({ name: 'stylegen' }).href">
+        <i class="el-icon-brush"></i>{{ $t("sidebar.stylegen") }}
+      </el-menu-item>
+      <el-menu-item :index="$router.resolve({ name: 'help' }).href">
+        <i class="el-icon-question"></i>{{ $t("sidebar.help") }}
       </el-menu-item>
       <a href="https://github.com/DoodleBears/blivechat" target="_blank">
         <el-menu-item>
-          <i class="el-icon-share"></i>{{$t('sidebar.projectAddress')}}
+          <i class="el-icon-share"></i>{{ $t("sidebar.projectAddress") }}
         </el-menu-item>
       </a>
       <a href="http://link.bilibili.com/ctool/vtuber" target="_blank">
         <el-menu-item>
-          <i class="el-icon-link"></i>{{$t('sidebar.giftRecordOfficial')}}
+          <i class="el-icon-link"></i>{{ $t("sidebar.giftRecordOfficial") }}
         </el-menu-item>
       </a>
       <el-submenu index="null">
         <template slot="title">
           <i class="el-icon-chat-line-square"></i>Language
         </template>
-        <el-menu-item v-for="{locale, name} in [
-            {locale: 'zh', name: '中文'},
-            {locale: 'ja', name: '日本語'},
-            {locale: 'en', name: 'English'}
-          ]" :key="locale"
+        <el-menu-item
+          v-for="{ locale, name } in [
+            { locale: 'zh', name: '中文' },
+            { locale: 'ja', name: '日本語' },
+            { locale: 'en', name: 'English' },
+          ]"
+          :key="locale"
           @click="onSelectLanguage(locale)"
-        >{{name}}</el-menu-item>
+          >{{ name }}</el-menu-item
+        >
       </el-submenu>
     </el-menu>
   </el-scrollbar>
@@ -44,13 +50,13 @@
 
 <script>
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   methods: {
     onSelectLanguage(locale) {
-      window.localStorage.lang = this.$i18n.locale = locale
-    }
-  }
-}
+      window.localStorage.lang = this.$i18n.locale = locale;
+    },
+  },
+};
 </script>
 
 <style>

@@ -67,6 +67,7 @@
 </template>
 
 <script>
+/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
 import ImgShadow from './ImgShadow.vue'
 import AuthorMedal from './AuthorMedal.vue'
 import AuthorBadge from './AuthorBadge.vue'
