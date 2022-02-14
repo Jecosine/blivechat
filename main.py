@@ -11,6 +11,7 @@ import tornado.web
 
 import api.chat
 import api.main
+import api.log
 import config
 import models.avatar
 import models.database
@@ -29,6 +30,7 @@ routes = [
     (r'/api/room_info', api.chat.RoomInfoHandler),
     (r'/api/avatar_url', api.chat.AvatarHandler),
     (r'/api/reply', api.chat.ReplyHandler),
+    (r'/api/log', api.log.LogHandler),
 
     (r'/(.*)', api.main.MainHandler, {'path': WEB_ROOT, 'default_filename': 'index.html'})
 ]
